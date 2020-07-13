@@ -73,12 +73,35 @@
         SIHttpModel *model = self.datas[indexPath.row-1];
         cell.result = model.path;
         cell.date = model.date;
+        
+        cell.tag = indexPath.row;
+        UILongPressGestureRecognizer *longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(actionlongPressGestureRecognizer:)];
+        [cell addGestureRecognizer:longPressGestureRecognizer];
     }else
     {
-        cell.result = @"点我一下就清除全部";
+        cell.result = @"点我一下就清除全部,  所以内容长按可拷贝";
         cell.date = @"";
     }
     return cell;
+}
+
+- (void)actionlongPressGestureRecognizer:(UILongPressGestureRecognizer *)longPressGestureRecognizer
+{
+    if(longPressGestureRecognizer.view.tag)
+    {
+        SIHttpModel *model = self.datas[longPressGestureRecognizer.view.tag];
+        UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+        pasteboard.string = model.path;
+        
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"拷贝成功" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+        [self presentViewController:alertController animated:YES completion:nil];
+        [self performSelector:@selector(dismiss:) withObject:alertController afterDelay:1.0];
+    }
+}
+
+- (void)dismiss:(UIAlertController *)alert
+{
+    [alert dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

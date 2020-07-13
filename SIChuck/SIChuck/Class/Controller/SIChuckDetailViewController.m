@@ -37,11 +37,8 @@
 
 - (void)setupViews
 {
-    self.lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.scrollView.frame.size.width/2.f, 5)];
-    self.lineView.backgroundColor = [UIColor redColor];
-    [self.view addSubview:self.lineView];
     
-    self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 10, self.view.frame.size.width, self.view.frame.size.height-10)];
+    self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 50, self.view.frame.size.width, self.view.frame.size.height-50)];
     self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width*2, 0);
     self.scrollView.pagingEnabled = YES;
     self.scrollView.bounces = YES;
@@ -49,16 +46,36 @@
     [self.view addSubview:self.scrollView];
     
     self.requsetVC = [[SIChuckResponseViewController alloc] initWithHttpModel:self.httpModel];
-    self.requsetVC.type = 1;
+    self.requsetVC.type = 2;
     [self addChildViewController:self.requsetVC];
     [self.scrollView addSubview:self.requsetVC.view];
     self.responseVC.view.frame = self.scrollView.bounds;
     
     self.responseVC = [[SIChuckResponseViewController alloc] initWithHttpModel:self.httpModel];
-    self.responseVC.type = 2;
+    self.responseVC.type = 1;
     [self addChildViewController:self.responseVC];
     [self.scrollView addSubview:self.responseVC.view];
     self.responseVC.view.frame = CGRectMake(self.scrollView.frame.size.width, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height);
+    
+    UILabel *requestLabel = [[UILabel alloc] init];
+    requestLabel.frame = CGRectMake(self.scrollView.frame.size.width/2.f, 10, self.scrollView.frame.size.width/2.f, 40);
+    requestLabel.textAlignment = NSTextAlignmentCenter;
+    requestLabel.font = [UIFont systemFontOfSize:13];
+    requestLabel.backgroundColor = [UIColor.blueColor colorWithAlphaComponent:0.3];
+    requestLabel.text = @"(要左右滚动)request";
+    
+    UILabel *responseLabel = [[UILabel alloc] init];
+    responseLabel.font = [UIFont systemFontOfSize:13];
+    responseLabel.frame = CGRectMake(0, 10, self.scrollView.frame.size.width/2.f, 40);
+    responseLabel.backgroundColor = [UIColor.blueColor colorWithAlphaComponent:0.2];
+    responseLabel.textAlignment = NSTextAlignmentCenter;
+    responseLabel.text = @"response(点了没用)";
+    [self.view addSubview:responseLabel];
+    [self.view addSubview:requestLabel];
+    
+    self.lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.scrollView.frame.size.width/2.f, 5)];
+    self.lineView.backgroundColor = [UIColor redColor];
+    [self.view addSubview:self.lineView];
 }
 
 #pragma mark - UIScrollViewDelegate

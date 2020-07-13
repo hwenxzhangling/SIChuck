@@ -10,7 +10,7 @@
 #import "SIChuckResponseCell.h"
 #import <JavaScriptCore/JavaScriptCore.h>
 
-@interface SIChuckResponseViewController ()<UITableViewDelegate,UITableViewDataSource,JSExport>
+@interface SIChuckResponseViewController ()<UITableViewDelegate,UITableViewDataSource,JSExport,SIChuckResponseCellDelegate>
 @property (nonatomic,strong)UITableView   *tableView;
 @property (nonatomic,strong)SIHttpModel   *httpModel;
 @property (nonatomic,strong)JSContext     *context;
@@ -86,6 +86,7 @@ return JSON.stringify(json, null, 2);\
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     SIChuckResponseCell *cell =[tableView dequeueReusableCellWithIdentifier:NSStringFromClass([SIChuckResponseCell class])];
+    cell.delegate = self;
     if(self.type == 2)
     {
         cell.result = self.responseResult;
@@ -108,6 +109,22 @@ return JSON.stringify(json, null, 2);\
         return [SIChuckResponseCell cellHeightWithModel:result];
     }
     return 0;
+}
+
+#pragma mark - SIChuckResponseCellDelegate
+- (void)copyContentCell:(SIChuckResponseCell *)cell
+{
+    UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+    pasteboard.string = cell.result;
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"拷贝成功" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    [self presentViewController:alertController animated:YES completion:nil];
+    [self performSelector:@selector(dismiss:) withObject:alertController afterDelay:1.0];
+}
+
+- (void)dismiss:(UIAlertController *)alert
+{
+    [alert dismissViewControllerAnimated:YES completion:nil];
 }
 @end
 
