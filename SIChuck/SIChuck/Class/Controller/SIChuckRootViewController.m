@@ -23,10 +23,23 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    UIButton *dissButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 100, 44)];
+    [dissButton setTitle:@"diss" forState:UIControlStateNormal];
+    dissButton.titleLabel.font = [UIFont systemFontOfSize:14];
+    [dissButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+    [dissButton addTarget:self action:@selector(dissButtonAction) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.titleView = dissButton;
+    
+    
     [self.view addSubview:self.tableView];
     self.datas =  [SIChuckTool shareInterface].httpModels;
     NSSortDescriptor *tempDes = [NSSortDescriptor sortDescriptorWithKey:@"date" ascending:NO];
     self.datas = [self.datas sortedArrayUsingDescriptors:@[tempDes]];
+}
+
+- (void)dissButtonAction
+{
+    [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
 #pragma mark - lazy tableView
