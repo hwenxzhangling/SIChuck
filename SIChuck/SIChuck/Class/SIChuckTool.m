@@ -46,9 +46,14 @@
 
 - (void)didClickedInMoveButton
 {
-    SIChuckRootViewController *rootVC = [[SIChuckRootViewController alloc] init];
+     SIChuckRootViewController *rootVC = [[SIChuckRootViewController alloc] init];
     UINavigationController *rootNavVC = [[UINavigationController alloc] initWithRootViewController:rootVC];
-    [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:rootNavVC animated:YES completion:nil];
+    UIViewController *topRootViewController = [[UIApplication  sharedApplication] keyWindow].rootViewController;
+    while (topRootViewController.presentedViewController)
+    {
+      topRootViewController = topRootViewController.presentedViewController;
+    }
+    [topRootViewController presentViewController:rootNavVC animated:YES completion:nil];
 }
 
 - (NSMutableArray *)httpModels
